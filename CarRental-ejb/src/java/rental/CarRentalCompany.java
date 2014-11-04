@@ -8,17 +8,32 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import javax.persistence.Id;
 
-public class CarRentalCompany {
+@Entity
+public class CarRentalCompany{
 
+    @Transient
     private static Logger logger = Logger.getLogger(CarRentalCompany.class.getName());
+    
+    @Id
     private String name;
+    
+    @OneToMany
     private List<Car> cars;
+    
+    @OneToMany
     private Set<CarType> carTypes = new HashSet<CarType>();
 
     /***************
      * CONSTRUCTOR *
      ***************/
+
+    // default public or protected constructor
+    public CarRentalCompany(){};
     
     public CarRentalCompany(String name, List<Car> cars) {
         logger.log(Level.INFO, "<{0}> Car Rental Company {0} starting up...", name);

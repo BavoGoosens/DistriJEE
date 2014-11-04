@@ -1,18 +1,33 @@
 package rental;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-public class Car {
+@Entity
+public class Car implements Serializable{
 
+    @Id 
     private int id;
+    
+    @OneToOne
     private CarType type;
+    
+    @OneToMany
     private Set<Reservation> reservations;
 
     /***************
      * CONSTRUCTOR *
      ***************/
+    
+    // default public or protected constructor
+    public Car(){};
     
     public Car(int uid, CarType type) {
     	this.id = uid;
