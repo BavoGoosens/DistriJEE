@@ -237,7 +237,7 @@ out/*
 *.iml/
 *.iml
 
-/CarRental/nbproject/
-/CarRental-client/nbproject/
-/CarRental-ejb/nbproject/
-/CarRental-lib/nbproject/
+/CarRental/nbproject/*
+/CarRental-client/nbproject/*
+/CarRental-ejb/nbproject/*
+/CarRental-lib/nbproject/*
