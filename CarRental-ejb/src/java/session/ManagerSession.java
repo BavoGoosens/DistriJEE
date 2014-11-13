@@ -1,10 +1,13 @@
 package session;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 import rental.Car;
 import rental.CarRentalCompany;
 import rental.CarType;
@@ -13,6 +16,8 @@ import rental.Reservation;
 
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
+    
+    EntityManager em;
     
     @Override
     public Set<CarType> getCarTypes(String company) {
@@ -69,5 +74,17 @@ public class ManagerSession implements ManagerSessionRemote {
             out.addAll(crc.getReservationsBy(renter));
         }
         return out.size();
+    }
+
+    @Override
+    public void addCarRentalCompany(String name) {
+        CarRentalCompany company = new CarRentalCompany(name);
+        em.persist(company);
+    }
+
+    @Override
+    public void addCarType(String carRentalCompany, String typeName, int nbOfSeats, float trunkSpace, double rentalPricePerDay, boolean smokingAllowed) {
+        CarRentalCompany company = em.find(CarRentalCompany.class, carRentalCompany);
+        company.addCarType(new CarType(typeName, nbOfSeats, trunkSpace, rentalPricePerDay, smokingAllowed));
     }
 }

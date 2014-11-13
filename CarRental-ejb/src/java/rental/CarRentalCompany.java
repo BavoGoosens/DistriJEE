@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
@@ -22,10 +23,10 @@ public class CarRentalCompany{
     @Id
     private String name;
     
-    @OneToMany
+    @OneToMany(cascade=ALL)
     private List<Car> cars;
     
-    @OneToMany
+    @OneToMany(cascade=ALL)
     private Set<CarType> carTypes = new HashSet<CarType>();
 
     /***************
@@ -34,6 +35,10 @@ public class CarRentalCompany{
 
     // default public or protected constructor
     public CarRentalCompany(){};
+    
+    public CarRentalCompany(String name) {
+        this.setName(name);
+    }
     
     public CarRentalCompany(String name, List<Car> cars) {
         logger.log(Level.INFO, "<{0}> Car Rental Company {0} starting up...", name);
@@ -62,6 +67,10 @@ public class CarRentalCompany{
     
     public Collection<CarType> getAllTypes() {
         return carTypes;
+    }
+    
+    public void addCarType(CarType type) {
+        this.carTypes.add(type);
     }
 
     public CarType getType(String carTypeName) {
