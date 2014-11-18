@@ -34,6 +34,8 @@ public class ManagerClient {
         for (String type: types) {
             System.out.println(type);
         }
+        int nb = ms.getNumberOfReservations("Dockx", "Compact");
+        System.out.println(nb);
     }
 
     public static void loadCompany(String companyName, String datafile, ManagerSessionRemote ms)

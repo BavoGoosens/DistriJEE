@@ -62,7 +62,14 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public int getNumberOfReservations(String company, String type) {
-        Set<Reservation> out = new HashSet<Reservation>();
+        Query query = em.createQuery( "SELECT	COUNT(r) "
+                + "FROM	CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r"
+                + "WHERE crc.name = :name AND  c.type = :type");
+        query.setParameter("name", company);
+        query.setParameter("type", type);
+        int nb  = query.getFirstResult();
+        return nb;
+        /*Set<Reservation> out = new HashSet<Reservation>();
         try {
             for(Car c: this.getCompany(company).getCars(type)){
                 out.addAll(c.getReservations());
@@ -71,7 +78,7 @@ public class ManagerSession implements ManagerSessionRemote {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
-        return out.size();
+        return out.size();*/
     }
 
     @Override
@@ -131,14 +138,17 @@ public class ManagerSession implements ManagerSessionRemote {
     
     @Override
     public Collection<String> getAllCarTypesForCompany(String companyName) {
-        Query query = em.createQuery("SELECT carTypes FROM CarRentalCompany WHERE name = :name");
+        Query query = em.createQuery(
+                  "SELECT crc.carTypes "
+                + "FROM CarRentalCompany crc "
+                + "WHERE crc.name = :name");
         query.setParameter("name", companyName);
-        List<List<CarType>> typeLists = query.getResultList();
-        List<CarType> types = typeLists.get(0);
+        List<CarType> types = query.getResultList();
+        List<String>  names = new ArrayList<String>();
         for (CarType type: types) {
-            System.out.println(type.getName());
+            names.add(type.getName());
         }
-        return null;
+        return names;
     }
     
     private Map<String, CarRentalCompany> getRentals() {
