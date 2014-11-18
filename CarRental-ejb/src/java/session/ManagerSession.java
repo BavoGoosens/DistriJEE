@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import rental.Car;
 import rental.CarRentalCompany;
@@ -19,7 +20,7 @@ import rental.Reservation;
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
     
-    @PersistenceContext(unitName="")
+    @PersistenceContext(unitName="CarRental-ejbPU", type = PersistenceContextType.EXTENDED)
     private EntityManager em;
     
     @Override

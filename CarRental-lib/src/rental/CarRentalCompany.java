@@ -1,5 +1,6 @@
 package rental;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -20,7 +21,7 @@ import rental.ReservationConstraints;
 import rental.ReservationException;
 
 @Entity
-public class CarRentalCompany{
+public class CarRentalCompany implements Serializable{
 
     @Transient
     private static Logger logger = Logger.getLogger(CarRentalCompany.class.getName());

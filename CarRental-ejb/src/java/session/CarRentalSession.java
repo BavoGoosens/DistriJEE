@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import rental.CarRentalCompany;
 import rental.CarType;
@@ -23,6 +25,8 @@ public class CarRentalSession implements CarRentalSessionRemote {
 
     private String renter;
     private List<Quote> quotes = new LinkedList<Quote>();
+    
+    @PersistenceContext( unitName = "CarRental-ejbPU", type = PersistenceContextType.TRANSACTION)
     private EntityManager em;
 
     @Override
