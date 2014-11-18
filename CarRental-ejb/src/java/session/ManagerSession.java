@@ -52,12 +52,20 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public int getNumberOfReservations(String company, String type, int id) {
-        try {
+        Query query = em.createQuery("SELECT	COUNT(r) "
+                + "FROM	CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r "
+                + "WHERE crc.name = :name AND  c.type.name = :type AND c.id = :id");
+        query.setParameter("name", company);
+        query.setParameter("type", type);
+        query.setParameter("id", id);
+        int nb = query.getFirstResult();
+        return nb;
+        /*try {
             return this.getCompany(company).getCar(id).getReservations().size();
         } catch (IllegalArgumentException ex) {
             Logger.getLogger(ManagerSession.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
-        }
+        }*/
     }
 
     @Override
