@@ -23,18 +23,18 @@ public class CarRentalSession implements CarRentalSessionRemote {
 
     private String renter;
     private List<Quote> quotes = new LinkedList<Quote>();
-    private Finder finder = new Finder();
+    private EntityManager em;
 
     @Override
     public Set<String> getAllRentalCompanies() {
-        return new HashSet<String>(finder.getRentals().keySet());
+        return new HashSet<String>(this.getRentals().keySet());
     }
     
     @Override
     public List<CarType> getAvailableCarTypes(Date start, Date end) {
         List<CarType> availableCarTypes = new LinkedList<CarType>();
         for(String crc : getAllRentalCompanies()) {
-            for(CarType ct : finder.getRentals().get(crc).getAvailableCarTypes(start, end)) {
+            for(CarType ct : this.getRentals().get(crc).getAvailableCarTypes(start, end)) {
                 if(!availableCarTypes.contains(ct))
                     availableCarTypes.add(ct);
             }
@@ -45,7 +45,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
     @Override
     public Quote createQuote(String company, ReservationConstraints constraints) throws ReservationException {
         try {
-            Quote out = finder.getCompany(company).createQuote(constraints, renter);
+            Quote out = this.getCompany(company).createQuote(constraints, renter);
             quotes.add(out);
             return out;
         } catch(Exception e) {
@@ -63,11 +63,11 @@ public class CarRentalSession implements CarRentalSessionRemote {
         List<Reservation> done = new LinkedList<Reservation>();
         try {
             for (Quote quote : quotes) {
-                done.add(finder.getCompany(quote.getRentalCompany()).confirmQuote(quote));
+                done.add(this.getCompany(quote.getRentalCompany()).confirmQuote(quote));
             }
         } catch (Exception e) {
             for(Reservation r:done)
-                finder.getCompany(r.getRentalCompany()).cancelReservation(r);
+                this.getCompany(r.getRentalCompany()).cancelReservation(r);
             throw new ReservationException(e);
         }
         return done;
@@ -79,6 +79,20 @@ public class CarRentalSession implements CarRentalSessionRemote {
             throw new IllegalStateException("name already set");
         }
         renter = name;
+    }
+    
+    public CarRentalCompany getCompany(String companyName) {
+        return this.em.find(CarRentalCompany.class, companyName);
+    }
+    
+    public Map<String, CarRentalCompany> getRentals() {
+        Map<String, CarRentalCompany> companies = new HashMap<String, CarRentalCompany>();
+        Query query = em.createQuery("SELECT c FROM CarRentalCompany c");
+        for (Iterator it = query.getResultList().iterator(); it.hasNext();) {
+            CarRentalCompany company = (CarRentalCompany) it.next();
+            companies.put(company.getName(), company);
+        }
+        return companies;
     }
     
     
