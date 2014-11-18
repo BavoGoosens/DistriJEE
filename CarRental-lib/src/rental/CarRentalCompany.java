@@ -45,15 +45,6 @@ public class CarRentalCompany implements Serializable{
     public CarRentalCompany(String name) {
         this.setName(name);
     }
-    
-    public CarRentalCompany(String name, List<Car> cars) {
-        logger.log(Level.INFO, "<{0}> Car Rental Company {0} starting up...", name);
-        setName(name);
-        this.cars = cars;
-        for (Car car : cars) {
-            carTypes.add(car.getType());
-        }
-    }
 
     /********
      * NAME *

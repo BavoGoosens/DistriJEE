@@ -8,6 +8,7 @@ package client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -29,6 +30,10 @@ public class ManagerClient {
                 (ManagerSessionRemote) new InitialContext().lookup(ManagerSessionRemote.class.getName());
         ManagerClient.loadCompany("Dockx", "dockx.csv", ms);
         ManagerClient.loadCompany("Hertz", "hertz.csv", ms);
+        Collection<String> types = ms.getAllCarTypesForCompany("Dockx");
+        for (String type: types) {
+            System.out.println(type);
+        }
     }
 
     public static void loadCompany(String companyName, String datafile, ManagerSessionRemote ms)

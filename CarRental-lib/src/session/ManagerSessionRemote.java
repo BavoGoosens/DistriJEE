@@ -1,5 +1,6 @@
 package session;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Remote;
@@ -24,4 +25,8 @@ public interface ManagerSessionRemote {
     public void addCarType(String carRentalCompany, String typeName, int nbOfSeats, float trunkSpace, double rentalPricePerDay, boolean smokingAllowed);
     
     public void addCar(String carRentalCompany, String carTypeName);
+    
+    public Collection<String> getAllCompanies();
+    
+    public Collection<String> getAllCarTypesForCompany(String companyName);
 }

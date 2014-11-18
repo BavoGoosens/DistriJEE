@@ -1,5 +1,7 @@
 package session;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -122,7 +124,24 @@ public class ManagerSession implements ManagerSessionRemote {
         em.flush();
     }
     
-    public Map<String, CarRentalCompany> getRentals() {
+    @Override
+    public Collection<String> getAllCompanies() {
+        return this.getRentals().keySet();
+    }
+    
+    @Override
+    public Collection<String> getAllCarTypesForCompany(String companyName) {
+        Query query = em.createQuery("SELECT carTypes FROM CarRentalCompany WHERE name = :name");
+        query.setParameter("name", companyName);
+        List<List<CarType>> typeLists = query.getResultList();
+        List<CarType> types = typeLists.get(0);
+        for (CarType type: types) {
+            System.out.println(type.getName());
+        }
+        return null;
+    }
+    
+    private Map<String, CarRentalCompany> getRentals() {
         Map<String, CarRentalCompany> companies = new HashMap<String, CarRentalCompany>();
         Query query = em.createQuery("SELECT c FROM CarRentalCompany c");
         for (Iterator it = query.getResultList().iterator(); it.hasNext();) {
@@ -132,7 +151,7 @@ public class ManagerSession implements ManagerSessionRemote {
         return companies;
     }
     
-    public CarRentalCompany getCompany(String companyName) {
+    private CarRentalCompany getCompany(String companyName) {
         return this.em.find(CarRentalCompany.class, companyName);
     }
 

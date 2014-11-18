@@ -85,11 +85,11 @@ public class CarRentalSession implements CarRentalSessionRemote {
         renter = name;
     }
     
-    public CarRentalCompany getCompany(String companyName) {
+    private CarRentalCompany getCompany(String companyName) {
         return this.em.find(CarRentalCompany.class, companyName);
     }
     
-    public Map<String, CarRentalCompany> getRentals() {
+    private Map<String, CarRentalCompany> getRentals() {
         Map<String, CarRentalCompany> companies = new HashMap<String, CarRentalCompany>();
         Query query = em.createQuery("SELECT c FROM CarRentalCompany c");
         for (Iterator it = query.getResultList().iterator(); it.hasNext();) {
