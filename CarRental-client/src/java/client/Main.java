@@ -16,7 +16,7 @@ public class Main extends AbstractScriptedTripTest<CarRentalSessionRemote, Manag
         super(scriptFile);
         ManagerClient mc = new ManagerClient();
         mc.run();
-        this.run();
+        //this.run();
     }
 
     public static void main(String[] args) throws Exception {
