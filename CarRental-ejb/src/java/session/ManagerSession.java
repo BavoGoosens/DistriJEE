@@ -20,7 +20,7 @@ import rental.Reservation;
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
     
-    @PersistenceContext(unitName="CarRental-ejbPU", type = PersistenceContextType.EXTENDED)
+    @PersistenceContext(unitName="CarRental-ejbPU")
     private EntityManager em;
     
     @Override
