@@ -12,10 +12,11 @@ import session.ManagerSessionRemote;
 
 public class Main extends AbstractScriptedTripTest<CarRentalSessionRemote, ManagerSessionRemote> {
 
-    public Main(String scriptFile) throws IOException, NamingException {
+    public Main(String scriptFile) throws IOException, NamingException, Exception {
         super(scriptFile);
         ManagerClient mc = new ManagerClient();
         mc.run();
+        this.run();
     }
 
     public static void main(String[] args) throws Exception {

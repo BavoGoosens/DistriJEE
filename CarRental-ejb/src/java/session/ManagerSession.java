@@ -63,8 +63,8 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public int getNumberOfReservations(String company, String type) {
         Query query = em.createQuery( "SELECT	COUNT(r) "
-                + "FROM	CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r"
-                + "WHERE crc.name = :name AND  c.type = :type");
+                + "FROM	CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r "
+                + "WHERE crc.name = :name AND  c.type.name = :type");
         query.setParameter("name", company);
         query.setParameter("type", type);
         int nb  = query.getFirstResult();
