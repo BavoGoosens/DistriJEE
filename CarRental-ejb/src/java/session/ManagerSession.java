@@ -3,6 +3,7 @@ package session;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -87,9 +88,37 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public void addCarType(String carRentalCompany, String typeName, int nbOfSeats, float trunkSpace, double rentalPricePerDay, boolean smokingAllowed) {
+    public void addCarType(  String carRentalCompany, String typeName, 
+                             int nbOfSeats, float trunkSpace, 
+                             double rentalPricePerDay, boolean smokingAllowed) {
+        /*CarType type = new CarType(typeName, nbOfSeats, trunkSpace, rentalPricePerDay, smokingAllowed);
+        for (CarRentalCompany company: this.getRentals().values()) {
+            if (company.getAllTypes().contains(type)) {
+                type = company.getType(typeName);
+                break;
+            }
+        }*/
+        CarType type;
+        Query query = em.createQuery("SELECT c FROM CarType c WHERE c.name = :typeName");
+        query.setParameter("typeName", typeName);
+        List<CarType> carTypes = query.getResultList();
+        if (carTypes.isEmpty()) {
+            type = new CarType(typeName, nbOfSeats, trunkSpace, rentalPricePerDay, smokingAllowed);
+        } else {
+            type = carTypes.get(0);
+        }
+        
         CarRentalCompany company = this.getCompany(carRentalCompany);
-        company.addCarType(new CarType(typeName, nbOfSeats, trunkSpace, rentalPricePerDay, smokingAllowed));
+        company.addCarType(type);
+        em.flush();
+    }
+    
+    @Override
+    public void addCar(String carRentalCompany, String carTypeName) {
+        CarRentalCompany company = this.getCompany(carRentalCompany);
+        CarType type = company.getType(carTypeName);
+        Car car = new Car(type);
+        company.addCar(car);
         em.flush();
     }
     
@@ -106,4 +135,5 @@ public class ManagerSession implements ManagerSessionRemote {
     public CarRentalCompany getCompany(String companyName) {
         return this.em.find(CarRentalCompany.class, companyName);
     }
+
 }

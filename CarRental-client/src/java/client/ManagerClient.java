@@ -28,6 +28,7 @@ public class ManagerClient {
         ManagerSessionRemote ms = 
                 (ManagerSessionRemote) new InitialContext().lookup(ManagerSessionRemote.class.getName());
         ManagerClient.loadCompany("Dockx", "dockx.csv", ms);
+        ManagerClient.loadCompany("Hertz", "hertz.csv", ms);
     }
 
     public static void loadCompany(String companyName, String datafile, ManagerSessionRemote ms)
@@ -46,12 +47,27 @@ public class ManagerClient {
             //tokenize on ,
             StringTokenizer csvReader = new StringTokenizer(line, ",");
             
+            // variables for new car type
+            String typeName = csvReader.nextToken();
+            int nbOfSeats = Integer.parseInt(csvReader.nextToken());
+            float trunkSpace = Float.parseFloat(csvReader.nextToken());
+            double rentalPricePerDay = Double.parseDouble(csvReader.nextToken());
+            boolean smokingAllowed = Boolean.parseBoolean(csvReader.nextToken());
+            
             ms.addCarType(  companyName, 
-                            csvReader.nextToken(),
-                            Integer.parseInt(csvReader.nextToken()),
-                            Float.parseFloat(csvReader.nextToken()),
-                            Double.parseDouble(csvReader.nextToken()),
-                            Boolean.parseBoolean(csvReader.nextToken()));
+                            typeName,
+                            nbOfSeats,
+                            trunkSpace,
+                            rentalPricePerDay,
+                            smokingAllowed);
+            
+            // number of cars that need to be added for this type
+            int carCount = Integer.parseInt(csvReader.nextToken());
+            
+            // add cars
+            for (int i = 1; i <= carCount; i++) {
+                ms.addCar(companyName, typeName);
+            }
         }
     }
     

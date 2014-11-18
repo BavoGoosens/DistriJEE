@@ -22,4 +22,6 @@ public interface ManagerSessionRemote {
     public void addCarRentalCompany(String name);
     
     public void addCarType(String carRentalCompany, String typeName, int nbOfSeats, float trunkSpace, double rentalPricePerDay, boolean smokingAllowed);
+    
+    public void addCar(String carRentalCompany, String carTypeName);
 }

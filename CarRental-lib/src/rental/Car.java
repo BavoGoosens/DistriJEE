@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.CascadeType.REMOVE;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,7 +20,7 @@ import rental.Reservation;
 @Entity
 public class Car implements Serializable{
 
-    @Id 
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
     
     @OneToOne
@@ -34,8 +36,7 @@ public class Car implements Serializable{
     // default public or protected constructor
     public Car(){};
     
-    public Car(int uid, CarType type) {
-    	this.id = uid;
+    public Car(CarType type) {
         this.type = type;
         this.reservations = new HashSet<Reservation>();
     }

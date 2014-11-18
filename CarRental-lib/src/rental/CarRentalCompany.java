@@ -76,7 +76,13 @@ public class CarRentalCompany implements Serializable{
     }
     
     public void addCarType(CarType type) {
-        this.carTypes.add(type);
+        if (!this.carTypes.contains(type)) {
+            this.carTypes.add(type);
+        }
+    }
+    
+    public void addCar(Car car) {
+        this.cars.add(car);
     }
 
     public CarType getType(String carTypeName) {
