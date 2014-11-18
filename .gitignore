@@ -237,10 +237,10 @@ out/*
 *.iml/
 *.iml
 
-/CarRental/nbproject/*
-/CarRental-client/nbproject/*
-/CarRental-ejb/nbproject/*
-/CarRental-lib/nbproject/*
+CarRental/nbproject/*
+CarRental-client/nbproject/*
+CarRental-ejb/nbproject/*
+CarRental-lib/nbproject/*
 CarRental-client/nbproject/build-impl.xml
 CarRental-client/nbproject/build-impl.xml
 CarRental-client/nbproject/build-impl.xml
