@@ -24,7 +24,7 @@ import session.ManagerSessionRemote;
  */
 public class ManagerClient {
     
-    public static void main(String[] args) throws IOException, NamingException {
+    public void run() throws IOException, NamingException {
         ManagerSessionRemote ms = 
                 (ManagerSessionRemote) new InitialContext().lookup(ManagerSessionRemote.class.getName());
         ManagerClient.loadCompany("Dockx", "dockx.csv", ms);

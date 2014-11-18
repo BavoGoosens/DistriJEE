@@ -1,8 +1,10 @@
 package client;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Set;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import rental.CarType;
 import rental.ReservationConstraints;
 import session.CarRentalSessionRemote;
@@ -10,13 +12,15 @@ import session.ManagerSessionRemote;
 
 public class Main extends AbstractScriptedTripTest<CarRentalSessionRemote, ManagerSessionRemote> {
 
-    public Main(String scriptFile) {
+    public Main(String scriptFile) throws IOException, NamingException {
         super(scriptFile);
+        ManagerClient mc = new ManagerClient();
+        mc.run();
     }
 
     public static void main(String[] args) throws Exception {
         //TODO: use updated manager interface to load cars into companies
-        new Main("trips").run();
+        new Main("trips");
     }
     
     @Override
