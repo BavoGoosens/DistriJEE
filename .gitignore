@@ -227,6 +227,10 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/CarRental/nbproject/
+/CarRental-client/nbproject/
+/CarRental-ejb/nbproject/
+/CarRental-lib/nbproject/
 /CarRental/nbproject/private/
 /CarRental-client/nbproject/private/
 /CarRental-ejb/nbproject/private/
