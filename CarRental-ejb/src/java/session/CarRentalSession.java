@@ -107,7 +107,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
     @Override
     public String getCheapestCarType(Date start, Date end) {
         // TODO copy code from manager stuffz
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return "Piemels";
     }
     
     
