@@ -169,7 +169,7 @@ public class ManagerSession implements ManagerSessionRemote {
     public Set<String> getBestClients() {
         Query query = em.createQuery(""
                 + "SELECT   r.carRenter, COUNT(r) "
-                + "FROM     CarRentalCompany crc JOIN crc.reservations r");
+                + "FROM     CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r");
         List<Object[]> result = query.getResultList();
         Set<String> bestClients = new HashSet<String>();
         int bestReservations = 0;
@@ -190,11 +190,11 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public CarType getMostPopularCarTypeIn(String companyName) {
         Query query = em.createQuery(""
-                + "SELECT   c.type, MAX( COUNT(r) ) "
-                + "FROM     CarRentalCompany crc JOIN crc.reservations r "
-                + "                             JOIN Car c ON r.carId = c.id "
+                + "SELECT   c.type, COUNT(r) AS reservationcount "
+                + "FROM     CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r "
                 + "WHERE    crc.name = :companyName "
-                + "GROUP BY c.type");
+                + "GROUP BY c.type "
+                + "ORDER BY reservationcount DESC");
         query.setParameter("companyName", companyName);
         List<Object[]> result = query.getResultList();
         return (CarType) result.get(0)[0];
