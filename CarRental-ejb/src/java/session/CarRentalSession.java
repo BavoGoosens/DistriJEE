@@ -106,7 +106,10 @@ public class CarRentalSession implements CarRentalSessionRemote {
 
     @Override
     public String getCheapestCarType(Date start, Date end) {
-        // TODO copy code from manager stuffz
+        /*Query query = em.createQuery(""
+                + " SELECT  t"
+                + " FROM    CarType"
+                + " WHERE   ");*/
         return "Piemels";
     }
     

@@ -169,13 +169,14 @@ public class ManagerSession implements ManagerSessionRemote {
     public Set<String> getBestClients() {
         Query query = em.createQuery(""
                 + "SELECT   r.carRenter, COUNT(r) "
-                + "FROM     CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r");
+                + "FROM     CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r "
+                + "GROUP BY r.carRenter");
         List<Object[]> result = query.getResultList();
         Set<String> bestClients = new HashSet<String>();
-        int bestReservations = 0;
+        long bestReservations = 0;
         for (Object[] carRenter: result) {
             String renterName = (String) carRenter[0];
-            int reservations = (Integer) carRenter[1];
+            long reservations = (Long) carRenter[1];
             if (reservations > bestReservations) {
                 bestClients.clear();
                 bestClients.add(renterName);
