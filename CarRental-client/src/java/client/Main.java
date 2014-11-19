@@ -67,14 +67,12 @@ public class Main extends AbstractScriptedTripTest<CarRentalSessionRemote, Manag
 
     @Override
     protected CarType getMostPopularCarTypeIn(ManagerSessionRemote ms, String carRentalCompanyName) throws Exception {
-        System.err.println("To be implemented.");
-        return null;
+        return ms.getMostPopularCarTypeIn(carRentalCompanyName);
     }
 
     @Override
     protected Set<String> getBestClients(ManagerSessionRemote ms) throws Exception {
-        System.err.println("To be implemented.");
-        return null;
+        return ms.getBestClients();
     }
 
     @Override

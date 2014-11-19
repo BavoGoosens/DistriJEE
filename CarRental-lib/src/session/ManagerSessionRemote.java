@@ -29,4 +29,8 @@ public interface ManagerSessionRemote {
     public Collection<String> getAllCompanies();
     
     public Collection<String> getAllCarTypesForCompany(String companyName);
+    
+    public Set<String> getBestClients();
+    
+    public CarType getMostPopularCarTypeIn(String companyName);
 }

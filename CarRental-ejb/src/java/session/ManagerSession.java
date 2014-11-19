@@ -13,12 +13,10 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import rental.Car;
 import rental.CarRentalCompany;
 import rental.CarType;
-import rental.Reservation;
 
 @Stateless
 public class ManagerSession implements ManagerSessionRemote {
@@ -166,6 +164,41 @@ public class ManagerSession implements ManagerSessionRemote {
         return names;
     }
     
+    @Override
+    public Set<String> getBestClients() {
+        Query query = em.createQuery(""
+                + "SELECT   r.carRenter, COUNT(r) "
+                + "FROM     CarRentalCompany crc JOIN crc.reservations r");
+        List<Object[]> result = query.getResultList();
+        Set<String> bestClients = new HashSet<String>();
+        int bestReservations = 0;
+        for (Object[] carRenter: result) {
+            String renterName = (String) carRenter[0];
+            int reservations = (Integer) carRenter[1];
+            if (reservations > bestReservations) {
+                bestClients.clear();
+                bestClients.add(renterName);
+                bestReservations = reservations;
+            } else if (reservations == bestReservations) {
+                bestClients.add(renterName);
+            }
+        }
+        return bestClients;
+    }
+    
+    @Override
+    public CarType getMostPopularCarTypeIn(String companyName) {
+        Query query = em.createQuery(""
+                + "SELECT   c.type, MAX( COUNT(r) ) "
+                + "FROM     CarRentalCompany crc JOIN crc.reservations r "
+                + "                             JOIN Car c ON r.carId = c.id "
+                + "WHERE    crc.name = :companyName "
+                + "GROUP BY c.type");
+        query.setParameter("companyName", companyName);
+        List<Object[]> result = query.getResultList();
+        return (CarType) result.get(0)[0];
+    }
+    
     private Map<String, CarRentalCompany> getRentals() {
         Map<String, CarRentalCompany> companies = new HashMap<String, CarRentalCompany>();
         Query query = em.createQuery("SELECT c FROM CarRentalCompany c");
@@ -179,5 +212,5 @@ public class ManagerSession implements ManagerSessionRemote {
     private CarRentalCompany getCompany(String companyName) {
         return this.em.find(CarRentalCompany.class, companyName);
     }
-
+    
 }
