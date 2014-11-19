@@ -106,11 +106,23 @@ public class CarRentalSession implements CarRentalSessionRemote {
 
     @Override
     public String getCheapestCarType(Date start, Date end) {
-        /*Query query = em.createQuery(""
-                + " SELECT  t"
-                + " FROM    CarType"
-                + " WHERE   ");*/
-        return "Piemels";
+        Query query = em.createQuery(""
+                + " SELECT  t.name "
+                + " FROM    CarType t"
+                + " WHERE   EXISTS  (   SELECT  c"
+                + "                     FROM    Car c "
+                + "                     WHERE   c.type = t AND "
+                + "                             NOT EXISTS  (   SELECT  r "
+                + "                                             FROM    c.reservations r "
+                + "                                             WHERE   (r.startDate BETWEEN :start AND :end) OR "
+                + "                                                     (r.endDate BETWEEN :start AND :end) "
+                + "                                         )"
+                + "                 )"
+                + " ORDER BY    t.rentalPricePerDay ASC");
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+        List<String> result = query.getResultList();
+        return result.isEmpty() ? null : result.get(0);
     }
     
     

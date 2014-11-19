@@ -69,13 +69,15 @@ public class ManagerSession implements ManagerSessionRemote {
 
     @Override
     public int getNumberOfReservations(String company, String type) {
-        Query query = em.createQuery( "SELECT	COUNT(r) "
-                + "FROM	CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r "
-                + "WHERE crc.name = :name AND  c.type.name = :type");
+        Query query = em.createQuery( ""
+                + "SELECT   COUNT(r) "
+                + "FROM     CarRentalCompany crc JOIN crc.cars c JOIN c.reservations r "
+                + "WHERE    crc.name = :name AND  c.type.name = :type");
         query.setParameter("name", company);
         query.setParameter("type", type);
-        int nb  = query.getFirstResult();
-        return nb;
+        List<Long> result = query.getResultList();
+        long nb  = result.get(0);
+        return (int) nb;
         /*Set<Reservation> out = new HashSet<Reservation>();
         try {
             for(Car c: this.getCompany(company).getCars(type)){
@@ -91,11 +93,14 @@ public class ManagerSession implements ManagerSessionRemote {
     @Override
     public int getNumberOfReservationsBy(String renter) {
         
-        Query query = em.createQuery( "SELECT	COUNT(r) "
-                + "FROM	Reservation r WHERE r.carRenter = :renter");
+        Query query = em.createQuery( ""
+                + "SELECT	COUNT(r) "
+                + "FROM	Reservation r "
+                + "WHERE r.carRenter = :renter");
         query.setParameter("renter", renter);
-        int nb  = query.getFirstResult();
-        return nb;
+        List<Long> result = query.getResultList();
+        long nb  = result.get(0);
+        return (int) nb;
         
         /*Set<Reservation> out = new HashSet<Reservation>();
         for(CarRentalCompany crc : this.getRentals().values()) {
@@ -216,12 +221,23 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public String getCheapestCarType(Date start, Date end, String company) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public CarType getMostPopularCarType(String company) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getCheapestCarType(Date start, Date end) {
+        Query query = em.createQuery(""
+                + " SELECT  t.name "
+                + " FROM    CarType t"
+                + " WHERE   EXISTS  (   SELECT  c"
+                + "                     FROM    Car c "
+                + "                     WHERE   c.type = t AND "
+                + "                             NOT EXISTS  (   SELECT  r "
+                + "                                             FROM    c.reservations r "
+                + "                                             WHERE   (r.startDate BETWEEN :start AND :end) OR "
+                + "                                                     (r.endDate BETWEEN :start AND :end) "
+                + "                                         )"
+                + "                 )"
+                + " ORDER BY    t.rentalPricePerDay ASC");
+        query.setParameter("start", start);
+        query.setParameter("end", end);
+        List<String> result = query.getResultList();
+        return result.isEmpty() ? null : result.get(0);
     }
 }
