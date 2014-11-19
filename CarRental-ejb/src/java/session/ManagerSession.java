@@ -182,12 +182,12 @@ public class ManagerSession implements ManagerSessionRemote {
     }
 
     @Override
-    public String getBestClient() {
+    public List<String> getBestClients() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String getMostPopularCarType(String company) {
+    public CarType getMostPopularCarType(String company) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
