@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import static javax.ejb.TransactionAttributeType.NOT_SUPPORTED;
+import static javax.ejb.TransactionAttributeType.REQUIRED;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -20,6 +23,7 @@ import rental.Reservation;
 import rental.ReservationConstraints;
 import rental.ReservationException;
 
+@TransactionAttribute(NOT_SUPPORTED)
 @Stateful
 public class CarRentalSession implements CarRentalSessionRemote {
 
@@ -62,6 +66,7 @@ public class CarRentalSession implements CarRentalSessionRemote {
         return quotes;
     }
 
+    @TransactionAttribute(REQUIRED)
     @Override
     public List<Reservation> confirmQuotes() throws ReservationException {
         List<Reservation> done = new LinkedList<Reservation>();
@@ -97,6 +102,12 @@ public class CarRentalSession implements CarRentalSessionRemote {
             companies.put(company.getName(), company);
         }
         return companies;
+    }
+
+    @Override
+    public String getCheapestCarType(Date start, Date end) {
+        // TODO copy code from manager stuffz
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

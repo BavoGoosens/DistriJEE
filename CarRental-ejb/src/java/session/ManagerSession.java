@@ -2,6 +2,7 @@ package session;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -212,5 +213,14 @@ public class ManagerSession implements ManagerSessionRemote {
     private CarRentalCompany getCompany(String companyName) {
         return this.em.find(CarRentalCompany.class, companyName);
     }
-    
+
+    @Override
+    public String getCheapestCarType(Date start, Date end, String company) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public CarType getMostPopularCarType(String company) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
