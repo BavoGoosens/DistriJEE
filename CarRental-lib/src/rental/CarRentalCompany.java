@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class CarRentalCompany implements Serializable{
@@ -27,7 +28,7 @@ public class CarRentalCompany implements Serializable{
     @OneToMany(cascade=ALL)
     private List<Car> cars;
     
-    @OneToMany(cascade=ALL)
+    @ManyToMany(cascade=ALL)
     private Set<CarType> carTypes = new HashSet<CarType>();
 
     /***************
