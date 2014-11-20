@@ -30,12 +30,6 @@ public class ManagerClient {
                 (ManagerSessionRemote) new InitialContext().lookup(ManagerSessionRemote.class.getName());
         ManagerClient.loadCompany("Dockx", "dockx.csv", ms);
         ManagerClient.loadCompany("Hertz", "hertz.csv", ms);
-        Collection<String> types = ms.getAllCarTypesForCompany("Dockx");
-        for (String type: types) {
-            System.out.println(type);
-        }
-        int nb = ms.getNumberOfReservations("Dockx", "Compact");
-        System.out.println(nb);
     }
 
     public static void loadCompany(String companyName, String datafile, ManagerSessionRemote ms)
